@@ -3,6 +3,7 @@ template = require 'templates/new-home-view'
 CocoCollection = require 'collections/CocoCollection'
 Course = require 'models/Course'
 utils = require 'core/utils'
+storage = require 'core/storage'
 
 #  TODO: auto margin feature paragraphs
 
@@ -12,13 +13,15 @@ module.exports = class NewHomeView extends RootView
   template: template
 
   events:
-    'click #play-btn': 'onClickPlayButton'
+    'click .play-btn': 'onClickPlayButton'
     'change #school-level-dropdown': 'onChangeSchoolLevelDropdown'
-    'click #teacher-btn': 'onClickTeacherButton'
+    'click .teacher-btn': 'onClickTeacherButton'
     'click #learn-more-link': 'onClickLearnMoreLink'
     'click .screen-thumbnail': 'onClickScreenThumbnail'
     'click #carousel-left': 'onLeftPressed'
     'click #carousel-right': 'onRightPressed'
+    'click .request-demo': 'onClickRequestDemo'
+    'click .join-class': 'onClickJoinClass'
 
   shortcuts:
     'right': 'onRightPressed'
@@ -29,6 +32,7 @@ module.exports = class NewHomeView extends RootView
     @jumbotron = options.jumbotron or utils.getQueryVariable('jumbotron') or 'student'
     @courses = new CocoCollection [], {url: "/db/course", model: Course}
     @supermodel.loadCollection(@courses, 'courses')
+    @variation ?= me.getHomepageGroup()
 
     window.tracker?.trackEvent 'Homepage Loaded', category: 'Homepage'
     if @getQueryVariable 'hour_of_code'
@@ -50,8 +54,29 @@ module.exports = class NewHomeView extends RootView
 
   onClickPlayButton: (e) ->
     @playSound 'menu-button-click'
-    return if @playURL isnt '/play'
+    e.preventDefault()
+    e.stopImmediatePropagation()
     window.tracker?.trackEvent 'Click Play', category: 'Homepage'
+    window.open @playURL, '_blank'
+
+  onClickRequestDemo: (e) ->
+    @playSound 'menu-button-click'
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    window.tracker?.trackEvent 'Submit Jumbo Form', category: 'Homepage'
+    obj = storage.load('request-quote-form')
+    obj ?= {}
+    obj.role =  @$('#request-form-role').val()
+    obj.numStudents = @$('#request-form-range').val()
+    storage.save('request-quote-form', obj)
+    application.router.navigate "/teachers/demo", trigger: true
+
+  onClickJoinClass: (e) ->
+    @playSound 'menu-button-click'
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    window.tracker?.trackEvent 'Click Join Class', category: 'Homepage'
+    application.router.navigate "/courses", trigger: true
 
   afterRender: ->
     @onChangeSchoolLevelDropdown()
@@ -83,9 +108,11 @@ module.exports = class NewHomeView extends RootView
     not me.get('stats')?.gamesCompleted and not me.get('heroConfig')
 
   onClickLearnMoreLink: ->
+    window.tracker?.trackEvent 'Click Learn More', category: 'Homepage'
     @scrollToLink('#classroom-in-box-container')
 
   onClickTeacherButton: ->
+    window.tracker?.trackEvent 'Click Teacher Button', category: 'Homepage'
     @scrollToLink('.request-demo-row', 600)
 
   onRightPressed: (event) ->
