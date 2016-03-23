@@ -96,6 +96,8 @@
     login_switch: "Have an account?"
     check_out_wiki: "Check out our new educator Wiki"
     want_coco: "Want CodeCombat at your school?"
+    form_select_role: "Select primary role"
+    form_select_range: "Select class size"
 
   nav:
     play: "Levels"  # The top nav bar entry where players choose which levels to play

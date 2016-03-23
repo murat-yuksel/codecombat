@@ -29,7 +29,6 @@ module.exports = class NewHomeView extends RootView
     'esc': 'onEscapePressed'
 
   initialize: (options) ->
-    @jumbotron = options.jumbotron or utils.getQueryVariable('jumbotron') or 'student'
     @courses = new CocoCollection [], {url: "/db/course", model: Course}
     @supermodel.loadCollection(@courses, 'courses')
     @variation ?= me.getHomepageGroup()
@@ -56,14 +55,14 @@ module.exports = class NewHomeView extends RootView
     @playSound 'menu-button-click'
     e.preventDefault()
     e.stopImmediatePropagation()
-    window.tracker?.trackEvent 'Click Play', category: 'Homepage'
+    window.tracker?.trackEvent 'Homepage Click Play', category: 'Homepage'
     window.open @playURL, '_blank'
 
   onClickRequestDemo: (e) ->
     @playSound 'menu-button-click'
     e.preventDefault()
     e.stopImmediatePropagation()
-    window.tracker?.trackEvent 'Submit Jumbo Form', category: 'Homepage'
+    window.tracker?.trackEvent 'Homepage Submit Jumbo Form', category: 'Homepage'
     obj = storage.load('request-quote-form')
     obj ?= {}
     obj.role =  @$('#request-form-role').val()
@@ -75,7 +74,7 @@ module.exports = class NewHomeView extends RootView
     @playSound 'menu-button-click'
     e.preventDefault()
     e.stopImmediatePropagation()
-    window.tracker?.trackEvent 'Click Join Class', category: 'Homepage'
+    window.tracker?.trackEvent 'Homepage Click Join Class', category: 'Homepage'
     application.router.navigate "/courses", trigger: true
 
   afterRender: ->
@@ -108,11 +107,11 @@ module.exports = class NewHomeView extends RootView
     not me.get('stats')?.gamesCompleted and not me.get('heroConfig')
 
   onClickLearnMoreLink: ->
-    window.tracker?.trackEvent 'Click Learn More', category: 'Homepage'
+    window.tracker?.trackEvent 'Homepage Click Learn More', category: 'Homepage'
     @scrollToLink('#classroom-in-box-container')
 
   onClickTeacherButton: ->
-    window.tracker?.trackEvent 'Click Teacher Button', category: 'Homepage'
+    window.tracker?.trackEvent 'Homepage Click Teacher Button', category: 'Homepage'
     @scrollToLink('.request-demo-row', 600)
 
   onRightPressed: (event) ->

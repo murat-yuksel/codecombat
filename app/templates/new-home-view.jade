@@ -3,7 +3,7 @@ extends /templates/base-flat
 mixin box
   .well.text-center
     if me.isAnonymous() == true
-      if ['new-home-legacy','new-home-legacy-left'].indexOf(view.variation) != -1
+      if ['home-legacy','home-legacy-left'].indexOf(view.variation) != -1
         h6#classroom-edition-header(data-i18n="new_home.classroom_edition")
         div
           button#teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.im_a_teacher")
@@ -11,15 +11,15 @@ mixin box
           a.btn.btn-forest.btn-lg.btn-block(href="/courses", data-i18n="new_home.im_a_student")
         h6#learn-to-code-header(data-i18n="new_home.learn_to_code")
         a.btn.btn-gold.btn-lg.btn-block.play-btn(href=view.playURL, data-i18n="new_home.play_now")
-      else if ['new-home-teachers','new-home-dropdowns'].indexOf(view.variation) != -1
+      else if ['home-teachers','home-dropdowns'].indexOf(view.variation) != -1
         h5#educator-header(data-i18n="new_home.teachers_and_educators")
         p.small(data-i18n="new_home.class_in_box")
 
-        if view.variation == 'new-home-dropdowns'
+        if view.variation == 'home-dropdowns'
           div.form-group
             h6.control-label(data-i18n="new_home.role")
             select.form-control#request-form-role
-              option(value="") Select primary role
+              option(value="", data-i18n="new_home.form_select_role")
               option(data-i18n="courses.teacher", value="Teacher")
               option(data-i18n="teachers_quote.tech_coordinator", value="Technology coordinator")
               option(data-i18n="teachers_quote.advisor", value="Advisor")
@@ -29,7 +29,7 @@ mixin box
           div.form-group
             h6.control-label(data-i18n="new_home.student_count")
             select.form-control#request-form-range
-              option(value="") Select range
+              option(value="", data-i18n="new_home.form_select_range")
               option 1-10
               option 11-50
               option 51-100
@@ -41,14 +41,14 @@ mixin box
             button.btn.btn-forest.btn-lg.btn-block.request-demo(href="#",data-i18n="new_home.get_started")
         else
           div
-            button#teacher-btn.btn.btn-forest.btn-lg.btn-block(data-i18n="new_home.get_started")
+            button.teacher-btn.btn.btn-forest.btn-lg.btn-block(data-i18n="new_home.get_started")
 
-        if view.variation == 'new-home-teachers'
+        if view.variation == 'home-teachers'
           h5#students-header(data-i18n="new_home.students")
           div
-            a.btn.btn-primary.btn-lg.btn-block.play-btn(href=view.playURL, data-i18n="new_home.play_now")
+            button.join-class.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.join_class", href="/courses")
           div
-            button.join-class.btn.btn-default.btn-lg.btn-block(data-i18n="new_home.join_class", href="/courses")
+            a.btn.btn-default.btn-lg.btn-block.play-btn(href=view.playURL, data-i18n="new_home.play_now")
         else
           h6(data-i18n="new_home.students_and_players", style="padding-bottom: 10px")
           div
@@ -66,7 +66,7 @@ mixin box
         button#teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.get_started")
 
 
-      if ['new-home-teachers','new-home-dropdowns','new-home-play-for-free'].indexOf(view.variation) != -1
+      if ['home-teachers','home-dropdowns','home-play-for-free'].indexOf(view.variation) != -1
         p.small
           span(data-i18n="new_home.login_switch")
           span &nbsp;
@@ -109,11 +109,11 @@ mixin box
         
 
 block content
-  .container-fluid#jumbotron-container-fluid(class=view.jumbotron === 'student' ? 'alt-image' : '')
+  .container-fluid#jumbotron-container-fluid
     .container
       .row.hidden-sm.hidden-xs
         case view.variation
-          when 'new-home-legacy-left'
+          when 'home-legacy-left'
             .col-lg-3.col-md-4
               +box
             .col-lg-7.col-lg-offset-2.col-md-8
