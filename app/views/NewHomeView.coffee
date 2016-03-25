@@ -4,6 +4,7 @@ CocoCollection = require 'collections/CocoCollection'
 Course = require 'models/Course'
 utils = require 'core/utils'
 storage = require 'core/storage'
+{logoutUser, me} = require('core/auth')
 
 #  TODO: auto margin feature paragraphs
 
@@ -22,6 +23,7 @@ module.exports = class NewHomeView extends RootView
     'click #carousel-right': 'onRightPressed'
     'click .request-demo': 'onClickRequestDemo'
     'click .join-class': 'onClickJoinClass'
+    'click .logout-btn': 'logoutAccount'
 
   shortcuts:
     'right': 'onRightPressed'
@@ -86,6 +88,10 @@ module.exports = class NewHomeView extends RootView
       keyboard: false
     })
     super()
+
+  logoutAccount: ->
+    Backbone.Mediator.publish("auth:logging-out", {})
+    logoutUser()
 
   onChangeSchoolLevelDropdown: (e) ->
     levels =

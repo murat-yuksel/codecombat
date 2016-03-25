@@ -6,13 +6,13 @@ mixin box
       if ['home-legacy','home-legacy-left'].indexOf(view.variation) != -1
         h6#classroom-edition-header(data-i18n="new_home.classroom_edition")
         div
-          button#teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.im_a_teacher")
+          button.teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.im_a_teacher")
         div
           a.btn.btn-forest.btn-lg.btn-block(href="/courses", data-i18n="new_home.im_a_student")
         h6#learn-to-code-header(data-i18n="new_home.learn_to_code")
         a.btn.btn-gold.btn-lg.btn-block.play-btn(href=view.playURL, data-i18n="new_home.play_now")
       else if ['home-teachers','home-dropdowns'].indexOf(view.variation) != -1
-        h5#educator-header(data-i18n="new_home.teachers_and_educators")
+        h5#educator-header(data-i18n="new_home.teachers")
         p.small(data-i18n="new_home.class_in_box")
 
         if view.variation == 'home-dropdowns'
@@ -63,7 +63,7 @@ mixin box
         
         h6#classroom-edition-header(style="padding-top: 20px",data-i18n="new_home.teachers_and_educators")
         p.small(data-i18n="new_home.class_in_box")
-        button#teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.get_started")
+        button.teacher-btn.btn.btn-primary.btn-lg.btn-block(data-i18n="new_home.get_started")
 
 
       if ['home-teachers','home-dropdowns','home-play-for-free'].indexOf(view.variation) != -1
@@ -100,7 +100,7 @@ mixin box
       p.small
         span(data-i18n="courses.not_you")
         span &nbsp;
-        a.logout-button(data-i18n="login.log_out", href="#")
+        a.logout-btn(data-i18n="login.log_out", href="#")
 
   if (me.get('preferredLanguage', true) || 'en-US').split('-')[0] == 'nl'
     .well#ideal-tickets-well.text-center.hidden-xs.hidden-sm
