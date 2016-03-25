@@ -56,7 +56,8 @@ module.exports = class NewHomeView extends RootView
     e.preventDefault()
     e.stopImmediatePropagation()
     window.tracker?.trackEvent 'Homepage Click Play', category: 'Homepage'
-    window.open @playURL, '_blank'
+    application.router.navigate @playURL, trigger: true
+    #window.open @playURL, '_blank'
 
   onClickRequestDemo: (e) ->
     @playSound 'menu-button-click'

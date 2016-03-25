@@ -50,7 +50,7 @@ mixin box
           div
             a.btn.btn-default.btn-lg.btn-block.play-btn(href=view.playURL, data-i18n="new_home.play_now")
         else
-          h6(data-i18n="new_home.students_and_players", style="padding-bottom: 10px")
+          h6#students-header(data-i18n="new_home.students_and_players")
           div
             a.btn.btn-primary.btn-lg.play-btn.btn-block(href=view.playURL, data-i18n="new_home.play_now")
       else
@@ -109,7 +109,7 @@ mixin box
         
 
 block content
-  .container-fluid#jumbotron-container-fluid
+  .container-fluid#jumbotron-container-fluid.alt-image
     .container
       .row.hidden-sm.hidden-xs
         case view.variation

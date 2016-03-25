@@ -82,7 +82,7 @@
     winning: "A winning combination of RPG gameplay and programming homework that pulls off making kid-friendly education legitimately enjoyable."
     run_class:"Everything you need to run a computer science class in your school today, no CS background required."
     teachers_and_educators: "Teachers!"
-    class_in_box: "Learn how our classroom-in-a-box platform fits into your curriculum"
+    class_in_box: "Learn how our classroom-in-a-box platform fits into your curriculum."
     get_started: "Get Started"
     students: "Students:"
     join_class: "Join Class"
