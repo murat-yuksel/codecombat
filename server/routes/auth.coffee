@@ -93,20 +93,15 @@ module.exports.setup = (app) ->
         return errors.notFound(res, [{message: 'not found', property: 'email'}])
 
       user.set('passwordReset', utils.getCodeCamel())
-      emailContent = "<h3>Your temporary password: <b>#{user.get('passwordReset')}</b></h3>"
-      emailContent += "<p>Reset your password at <a href=\"http://codecombat.com/account/settings\">http://codecombat.com/account/settings</a></p>"
-      emailContent += "<p>Your old password cannot be retrieved.</p>"
       user.save (err) =>
         return errors.serverError(res) if err
         unless config.unittest
           context =
-            email_id: sendwithus.templates.generic_email
+            email_id: sendwithus.templates.password_reset
             recipient:
               address: req.body.email
             email_data:
-              subject: 'CodeCombat Recovery Password'
-              title: ''
-              content: emailContent
+              tempPassword: user.get('passwordReset')
           sendwithus.api.send context, (err, result) ->
             if err
               console.error "Error sending password reset email: #{err.message or err}"
