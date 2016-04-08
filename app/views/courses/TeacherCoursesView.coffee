@@ -107,11 +107,10 @@ module.exports = class TeacherCoursesView extends RootView
     
   onClickPlayLevel: (e) ->
     form = $(e.currentTarget).closest('.play-level-form')
-    levelSelect = form.find('.level-select')
-    levelSlug = levelSelect.val()
-    courseID = levelSelect.data('course-id')
-    courseInstanceID = "56d632bebe841b8c66f066ff"
-    url = "/play/level/#{levelSlug}?course=#{courseID}&course-instance=#{courseInstanceID}"
+    levelSlug = form.find('.level-select').val()
+    courseID = form.data('course-id')
+    language = form.find('.language-select').val()
+    url = "/play/level/#{levelSlug}?course=#{courseID}&codeLanguage=#{language}"
     application.router.navigate(url, { trigger: true })
 
   onLoaded: ->

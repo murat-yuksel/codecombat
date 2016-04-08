@@ -28,12 +28,12 @@ block content
         .col-sm-9
           +course-info(course)
         .col-sm-3
-          .play-level-form
-            .form-group.hidden
+          .play-level-form(data-course-id=course.id)
+            .form-group
               label.control-label
                 span(data-i18n="courses.select_language")
                 | :
-                select.language-select.form-control(data-course-id=course.id)
+                select.language-select.form-control
                   // TODO: Automate this list @scott
                   option(value="python")
                     | Python
@@ -51,7 +51,7 @@ block content
               label.control-label
                 span(data-i18n="courses.select_level")
                 | :
-                select.level-select.form-control(data-course-id=course.id)
+                select.level-select.form-control
                   if view.campaigns.loaded
                     each level, levelIndex in view.campaigns.get(course.get('campaignID')).getLevels().models
                       option(value=level.get('slug'))
@@ -62,7 +62,7 @@ block content
                         span
                           = level.get('name')
             a.play-level-button.btn.btn-lg.btn-primary
-              span(data-i18n="courses.play_level" data-course-id=course.id)
+              span(data-i18n="courses.play_level")
           .clearfix       
             
 mixin course-info(course)

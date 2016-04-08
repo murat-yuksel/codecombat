@@ -100,20 +100,23 @@ module.exports = class CourseVictoryModal extends ModalView
         triggeredBy: @session.id
         achievement: achievement.id
       })
-      ea.save()
-      # Can't just add models to supermodel because each ea has the same url
-      ea.sr = @supermodel.addSomethingResource(ea.cid)
-      @newEarnedAchievements.push ea
-      @listenToOnce ea, 'sync', (model) ->
-        model.sr.markLoaded()
-        if _.all((ea.id for ea in @newEarnedAchievements))
-          unless me.loading
-            @supermodel.loadModel(me, {cache: false})
-          @newEarnedAchievementsResource.markLoaded()
+      if me.isTeacher()
+        @newEarnedAchievements.push ea
+      else
+        ea.save()
+        # Can't just add models to supermodel because each ea has the same url
+        ea.sr = @supermodel.addSomethingResource(ea.cid)
+        @newEarnedAchievements.push ea
+        @listenToOnce ea, 'sync', (model) ->
+          model.sr.markLoaded()
+          if _.all((ea.id for ea in @newEarnedAchievements))
+            unless me.loading
+              @supermodel.loadModel(me, {cache: false})
+            @newEarnedAchievementsResource.markLoaded()
 
-
-    # have to use a something resource because addModelResource doesn't handle models being upserted/fetched via POST like we're doing here
-    @newEarnedAchievementsResource = @supermodel.addSomethingResource('earned achievements') if @newEarnedAchievements.length
+    unless me.isTeacher()
+      # have to use a something resource because addModelResource doesn't handle models being upserted/fetched via POST like we're doing here
+      @newEarnedAchievementsResource = @supermodel.addSomethingResource('earned achievements') if @newEarnedAchievements.length
 
 
   onLoaded: ->
@@ -164,5 +167,8 @@ module.exports = class CourseVictoryModal extends ModalView
     application.router.navigate(link, {trigger: true})
 
   onDone: ->
-    link = "/courses/#{@courseID}/#{@courseInstanceID}"
+    if me.isTeacher()
+      link = "/teachers/courses"
+    else
+      link = "/courses/#{@courseID}/#{@courseInstanceID}"
     application.router.navigate(link, {trigger: true})
