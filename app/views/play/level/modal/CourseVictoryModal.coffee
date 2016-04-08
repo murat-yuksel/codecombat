@@ -163,7 +163,10 @@ module.exports = class CourseVictoryModal extends ModalView
     @showView(@views[index+1])
 
   onNextLevel: ->
-    link = "/play/level/#{@nextLevel.get('slug')}?course=#{@courseID}&course-instance=#{@courseInstanceID}"
+    if me.isTeacher()
+      link = "/play/level/#{@nextLevel.get('slug')}?course=#{@courseID}&codeLanguage=#{me.get('aceConfig').language}"
+    else
+      link = "/play/level/#{@nextLevel.get('slug')}?course=#{@courseID}&course-instance=#{@courseInstanceID}"
     application.router.navigate(link, {trigger: true})
 
   onDone: ->
