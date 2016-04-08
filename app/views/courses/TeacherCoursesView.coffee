@@ -3,6 +3,7 @@ app = require 'core/application'
 CocoCollection = require 'collections/CocoCollection'
 CocoModel = require 'models/CocoModel'
 Course = require 'models/Course'
+Campaigns = require 'collections/Campaigns'
 Classroom = require 'models/Classroom'
 Classrooms = require 'collections/Classrooms'
 InviteToClassroomModal = require 'views/courses/InviteToClassroomModal'
@@ -22,6 +23,7 @@ module.exports = class TeacherCoursesView extends RootView
     'click .btn-add-students': 'onClickAddStudents'
     'click .create-new-class': 'onClickCreateNewClassButton'
     'click .edit-classroom-small': 'onClickEditClassroomSmall'
+    'click .play-level-button': 'onClickPlayLevel'
     
   guideLinks:
     {
@@ -43,6 +45,9 @@ module.exports = class TeacherCoursesView extends RootView
     @classrooms.comparator = '_id'
     @listenToOnce @classrooms, 'sync', @onceClassroomsSync
     @supermodel.loadCollection(@classrooms, 'classrooms', {data: {ownerID: me.id}})
+    @campaigns = new Campaigns()
+    @campaigns.fetch()
+    @supermodel.trackCollection(@campaigns)
     @courseInstances = new CocoCollection([], { url: "/db/course_instance", model: CourseInstance })
     @courseInstances.comparator = 'courseID'
     @courseInstances.sliceWithMembers = -> return @filter (courseInstance) -> _.size(courseInstance.get('members')) and courseInstance.get('classroomID')
@@ -99,6 +104,15 @@ module.exports = class TeacherCoursesView extends RootView
     modal = new ClassroomSettingsModal({classroom: classroom})
     @openModalView(modal)
     @listenToOnce modal, 'hide', @render
+    
+  onClickPlayLevel: (e) ->
+    form = $(e.currentTarget).closest('.play-level-form')
+    levelSelect = form.find('.level-select')
+    levelSlug = levelSelect.val()
+    courseID = levelSelect.data('course-id')
+    courseInstanceID = "56d632bebe841b8c66f066ff"
+    url = "/play/level/#{levelSlug}?course=#{courseID}&course-instance=#{courseInstanceID}"
+    application.router.navigate(url, { trigger: true })
 
   onLoaded: ->
     super()
