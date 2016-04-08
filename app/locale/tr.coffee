@@ -315,7 +315,7 @@ module.exports = nativeDescription: "Türkçe", englishDescription: "Turkish", t
 #    completed_level: "Completed Level:"
 #    course: "Course:"
     done: "Bitti"
-#    next_level: "Next Level:"
+#    next_level: "Next Level"
 #    next_game: "Next game"
 #    show_menu: "Show game menu"
     home: "Anasayfa" # Not used any more, will be removed soon.
