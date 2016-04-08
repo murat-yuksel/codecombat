@@ -51,7 +51,8 @@ module.exports = class TeacherClassView extends RootView
       jqxhrs = @students.fetchForClassroom(@classroom)
       if jqxhrs.length > 0
         @supermodel.trackCollection(@students)
-      @listenTo @students, 'sync', @sortByName
+      @listenTo @students, 'sync', @removeDeletedStudents.bind(this)
+      @listenTo @students, 'sync', @sortByName.bind(this)
       @listenTo @students, 'sort', @renderSelectors.bind(@, '.students-table', '.student-levels-table')
       
       @classroom.sessions = new LevelSessions()
@@ -130,8 +131,20 @@ module.exports = class TeacherClassView extends RootView
     modal = new InviteToClassroomModal({ classroom: @classroom })
     @openModalView(modal)
     @listenToOnce modal, 'hide', @render
+  
+  removeDeletedStudents: (e) =>
+    console.log "sync!"
+    _.remove(@classroom.get('members'), (memberID) =>
+      console.log "member is deleted: ", @students.get(memberID)?.get('deleted')
+      @students.get(memberID)?.get('deleted') or not @students.get(memberID)
+    )
+    true
     
-  sortByName: (e) ->
+    # @students.reset @students.filter (student) ->
+    #   console.log "model is deleted: ", student.get('deleted')
+    #   not student.get('deleted')
+    
+  sortByName: (e) =>
     if @sortValue is 'name'
       @sortDirection = -@sortDirection
     else
