@@ -1,9 +1,13 @@
+_ = require 'lodash'
+co = require 'co'
 errors = require '../commons/errors'
 wrap = require 'co-express'
 Promise = require 'bluebird'
 parse = require '../commons/parse'
 request = require 'request'
+mongoose = require 'mongoose'
 User = require '../models/User'
+Classroom = require '../models/Classroom'
 
 
 module.exports =
@@ -38,3 +42,15 @@ module.exports =
     throw new errors.NotFound('No user with that Facebook ID') unless user
     console.log 'okay done'
     res.status(200).send(user.formatEntity(req))
+
+  removeFromClassrooms: wrap (req, res, next) ->
+    userID = mongoose.Types.ObjectId(req.user.id)
+    yield Classroom.update(
+      { members: userID }
+      {
+        $addToSet: { deletedMembers: userID }
+        $pull: { members: userID }
+      }
+      { multi: true, new: true }
+    )
+    next()
